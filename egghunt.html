@@ -41,10 +41,10 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
     #todo-list img {
-        margin-right: 20px;
-        width: 40px;
-        height: 40px;
+        width: 64px;
+        height: 64px;
         border-radius: 50%;
+        object-fit: cover;
     }
     .task-text {
         flex-grow: 1;
@@ -73,19 +73,6 @@
         text-decoration: line-through;
         opacity: 0.6;
     }
-    /* Dark Mode */
-    .dark-mode {
-        background-color: #222;
-        color: #fff;
-    }
-    .dark-mode .container {
-        background-color: #333;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    }
-    .dark-mode .dropdown-content {
-        background-color: #333;
-        color: #fff;
-    }
 </style>
 </head>
 <body>
@@ -96,11 +83,42 @@
         <button class="btn" onclick="addTodo()">Add</button>
         <ul id="todo-list"></ul>
     </div>
-    <div class="dropdown" style="position: fixed; top: 10px; right: 10px;">
-        <button class="btn" onclick="toggleDarkMode()">☀️</button>
-    </div>
 
     <script>
+        window.onload = function() {
+            var predefinedTasks = [
+                { text: "Test 1", imageSrc: "image1.png" },
+                { text: "Test 2", imageSrc: "image2.png" },
+                { text: "Test 3", imageSrc: "image3.png" },
+                { text: "Eggs", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" }
+            ];
+
+            var todoList = document.getElementById("todo-list");
+
+            predefinedTasks.forEach(function(task) {
+                var li = document.createElement("li");
+                var img = document.createElement("img");
+                img.src = task.imageSrc;
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.classList.add("btn", "delete-btn");
+                deleteBtn.onclick = function() {
+                    li.remove();
+                };
+                var checkBtn = document.createElement("button");
+                checkBtn.textContent = "Check";
+                checkBtn.classList.add("btn", "check-btn");
+                checkBtn.onclick = function() {
+                    li.classList.toggle("completed");
+                };
+                li.appendChild(img);
+                li.appendChild(document.createTextNode(task.text));
+                li.appendChild(deleteBtn);
+                li.appendChild(checkBtn);
+                todoList.appendChild(li);
+            });
+        };
+
         function addTodo() {
             var todoInput = document.getElementById("todo-input");
             var todoText = todoInput.value;
@@ -120,7 +138,6 @@
                 } else {
                     img.src = "default-image.png"; // Default image if no image is selected
                 }
-                var textNode = document.createTextNode(todoText);
                 var deleteBtn = document.createElement("button");
                 deleteBtn.textContent = "Delete";
                 deleteBtn.classList.add("btn", "delete-btn");
@@ -134,7 +151,7 @@
                     li.classList.toggle("completed");
                 };
                 li.appendChild(img);
-                li.appendChild(textNode);
+                li.appendChild(document.createTextNode(todoText));
                 li.appendChild(deleteBtn);
                 li.appendChild(checkBtn);
                 todoList.appendChild(li);
@@ -144,37 +161,6 @@
                 alert("Please enter a valid task.");
             }
         }
-
-        function toggleDarkMode() {
-            var container = document.getElementById("container");
-            container.classList.toggle("dark-mode");
-        }
-
-        // Initialize To-Do list with predefined tasks
-        window.onload = function() {
-            var predefinedTasks = ["Egg 1", "Egg 2", "Egg 3"]; // Add your predefined tasks here
-            var todoList = document.getElementById("todo-list");
-            predefinedTasks.forEach(function(task) {
-                var li = document.createElement("li");
-                var textNode = document.createTextNode(task);
-                var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
-                deleteBtn.classList.add("btn", "delete-btn");
-                deleteBtn.onclick = function () {
-                    li.remove();
-                };
-                var checkBtn = document.createElement("button");
-                checkBtn.textContent = "Check";
-                checkBtn.classList.add("btn", "check-btn");
-                checkBtn.onclick = function () {
-                    li.classList.toggle("completed");
-                };
-                li.appendChild(textNode);
-                li.appendChild(deleteBtn);
-                li.appendChild(checkBtn);
-                todoList.appendChild(li);
-            });
-        };
     </script>
 </body>
 </html>
