@@ -200,7 +200,7 @@
                     li.remove();
                 };
                 var checkBtn = document.createElement("button");
-                checkBtn.textContent = "Check";
+                deleteBtn.innerHTML = "&#128465;"; // Unicode for trash bin icon
                 checkBtn.classList.add("btn", "check-btn");
                 checkBtn.onclick = function () {
                     li.classList.toggle("completed");
