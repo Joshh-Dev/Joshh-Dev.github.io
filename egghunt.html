@@ -155,7 +155,7 @@
                 var img = document.createElement("img");
                 img.src = task.imageSrc;
                 var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
+                deleteBtn.textContent = "🗑️";
                 deleteBtn.classList.add("btn", "delete-btn");
                 deleteBtn.onclick = function() {
                     li.remove();
@@ -194,7 +194,7 @@
                     img.src = "default-image.png"; // Default image if no image is selected
                 }
                 var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "🗑️";
+                deleteBtn.textContent = "Delete";
                 deleteBtn.classList.add("btn", "delete-btn");
                 deleteBtn.onclick = function () {
                     li.remove();
