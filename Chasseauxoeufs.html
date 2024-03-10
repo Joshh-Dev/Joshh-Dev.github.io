@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+    #todo-list {
+        margin-top: 20px;
+        padding: 0;
+    }
+    #todo-list li {
+        list-style-type: none;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    #todo-list img {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .task-text {
+        flex-grow: 1;
+        color: #333;
+    }
+    .btn {
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #45a049;
+    }
+    .delete-btn {
+        background-color: #f44336;
+        margin-left: 10px;
+    }
+    .delete-btn:hover {
+        background-color: #cc3731;
+    }
+    .completed {
+        text-decoration: line-through;
+        opacity: 0.6;
+    }
+</style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="todo-input" placeholder="Add new task" style="color: #000;">
+        <input type="file" id="image-input" style="color: #000;">
+        <button class="btn" onclick="addTodo()">Add</button>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var predefinedTasks = [
+                { text: "Dungeon Quest", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Restaurant Tycoon 2", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Boxing Beta", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Tower Heros", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Elemental Powers Tycoon", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Tower Defense Simulator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "War Machine", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Combat Warriors", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Astro Renaissance", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Arsenal", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "RBB Minigames", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Steep Steps", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Lab Experiment", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Obby But You're On a Bike", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Pet Simulator 99", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Bayside High School", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Arm Wrestle Simulator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Elected Admin", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Murderers VS Sheriffs Duels", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Fabled Legacy", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Catalog Avatar Creator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Survive The Killer", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Dig to China", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "The Mimic", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Blockate", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Camera Man Race Simulator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "3008", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Carry A Friend (Teamwork Obby)", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Bike of Hell", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "My Prison", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Bedwars", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Brookhaven", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Banana Eats", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "SpongeBob Simulator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Natural Disaster Survival", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Blade Ball", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Obby Creator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Piggy", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "RagDoll Engine", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Anime Dimensions Simulator", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Death Ball", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Drive World", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Words//Zero", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Shindo Life", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Football fusion", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Mega Hide And Seek", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Legends Of Speed", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Driving Empire", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Metro Life", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Dealership Tycoon", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Ninja Legends", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Muscle Legends", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Escape Running Head", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "LiveTopia", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Adopt Me", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Royal High", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "The Strongest BattleGrounds", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Murder Mystery 2- Doubt The Badge", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" },
+                { text: "Toilet Tower Defense", imageSrc: "https://vignette.wikia.nocookie.net/roblox/images/3/3b/Eggvertisement_Egg.png/revision/latest/scale-to-width-down/310?cb=20170213185438" }
+            ];
+
+            var todoList = document.getElementById("todo-list");
+
+            predefinedTasks.forEach(function(task) {
+                var li = document.createElement("li");
+                var img = document.createElement("img");
+                img.src = task.imageSrc;
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.classList.add("btn", "delete-btn");
+                deleteBtn.onclick = function() {
+                    li.remove();
+                };
+                var checkBtn = document.createElement("button");
+                checkBtn.textContent = "Check";
+                checkBtn.classList.add("btn", "check-btn");
+                checkBtn.onclick = function() {
+                    li.classList.toggle("completed");
+                };
+                li.appendChild(img);
+                li.appendChild(document.createTextNode(task.text));
+                li.appendChild(deleteBtn);
+                li.appendChild(checkBtn);
+                todoList.appendChild(li);
+            });
+        };
+
+        function addTodo() {
+            var todoInput = document.getElementById("todo-input");
+            var todoText = todoInput.value;
+            var imageInput = document.getElementById("image-input");
+            var imageFile = imageInput.files[0];
+            
+            if (todoText.trim() !== "") {
+                var todoList = document.getElementById("todo-list");
+                var li = document.createElement("li");
+                var img = document.createElement("img");
+                if (imageFile) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(imageFile);
+                } else {
+                    img.src = "default-image.png"; // Default image if no image is selected
+                }
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.classList.add("btn", "delete-btn");
+                deleteBtn.onclick = function () {
+                    li.remove();
+                };
+                var checkBtn = document.createElement("button");
+                checkBtn.textContent = "Check";
+                checkBtn.classList.add("btn", "check-btn");
+                checkBtn.onclick = function () {
+                    li.classList.toggle("completed");
+                };
+                li.appendChild(img);
+                li.appendChild(document.createTextNode(todoText));
+                li.appendChild(deleteBtn);
+                li.appendChild(checkBtn);
+                todoList.appendChild(li);
+                todoInput.value = "";
+                imageInput.value = ""; // Reset file input after adding task
+            } else {
+                alert("Please enter a valid task.");
+            }
+        }
+    </script>
+</body>
+</html>
