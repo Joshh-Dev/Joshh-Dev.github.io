@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Counter</title>
+</head>
+<body>
+    <h1>Badge Counter</h1>
+    <label for="username">Enter your username:</label>
+    <input type="text" id="username" name="username">
+    <button onclick="fetchBadges()">Check Badges</button>
+    <p id="badgeCount"></p>
+
+    <script>
+        async function fetchBadges() {
+            const username = document.getElementById('username').value;
+            try {
+                const response = await fetch(`https://example.com/api/badges?username=${username}`);
+                const data = await response.json();
+                const badgeCount = data.badges.length;
+                document.getElementById('badgeCount').textContent = `You have ${badgeCount} badges.`;
+            } catch (error) {
+                console.error('Error fetching badges:', error);
+                document.getElementById('badgeCount').textContent = 'An error occurred. Please try again later.';
+            }
+        }
+    </script>
+</body>
+</html>
