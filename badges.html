@@ -16,7 +16,7 @@
         async function fetchBadges() {
             const username = document.getElementById('username').value;
             try {
-                const response = await fetch(`https://example.com/api/badges?username=${username}`);
+                const response = await fetch(`https://roproxy.com/api/badges?username=${username}`);
                 const data = await response.json();
                 const badgeCount = data.badges.length;
                 document.getElementById('badgeCount').textContent = `You have ${badgeCount} badges.`;
