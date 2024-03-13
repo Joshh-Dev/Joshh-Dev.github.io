@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Badge Counter</h1>
-    <label for="userId">Enter your user ID:</label>
+    <label for="userId">Enter your Roblox user ID:</label>
     <input type="text" id="userId" name="userId">
     <button onclick="fetchBadges()">Check Badges</button>
     <p id="badgeCount"></p>
@@ -16,7 +16,7 @@
         async function fetchBadges() {
             const userId = document.getElementById('userId').value;
             try {
-                const response = await fetch(`https://badges.roblox.com/v1/users/${userId}/badges?limit=10&sortOrder=Asc`);
+                const response = await fetch(`https://www.roblox.com/users/inventory/list-json?assetTypeId=21&cursor=&itemsPerPage=100&userId=${userId}`);
                 const data = await response.json();
                 const badgeCount = data.data.length;
                 document.getElementById('badgeCount').textContent = `You have ${badgeCount} badges.`;
